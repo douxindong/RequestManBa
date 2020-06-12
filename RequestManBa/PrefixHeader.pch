@@ -9,7 +9,21 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
+#import "AFNetworking.h"
+#import "Masonry.h"
+#import "YYModel.h"
+#import "Tools.h"
+#import "RequestTool.h"
+#import "Header.h"
+#import "UIView+Additional.h"
+#define  TIME_OUT     10 //请求超时时间
+#define ScreenWidth [UIScreen mainScreen].bounds.size.width
+#define ScreenHeigh [UIScreen mainScreen].bounds.size.height
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
-
+#ifdef DEBUG // 开发阶段-DEBUG阶段:使用Log
+#define NSLog(FORMAT, ...) fprintf(stderr,"%s:%d\t%s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else // 发布阶段-上线阶段:移除Log
+#define NSLog(FORMAT, ...) nil
+#endif
 #endif /* PrefixHeader_pch */

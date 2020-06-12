@@ -13,6 +13,11 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+}
+- (IBAction)chooseMethod:(id)sender {
+}
+- (IBAction)send:(id)sender {
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -7,7 +7,8 @@
 //
 
 #import "MainTabBarController.h"
-
+#import "ViewController.h"
+#import "MainNavigationController.h"
 @interface MainTabBarController ()
 
 @end
@@ -17,6 +18,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    ViewController *vc = [ViewController new];
+    UITabBarItem *item1 = [[UITabBarItem alloc]initWithTabBarSystemItem:UITabBarSystemItemHistory tag:0];
+    vc.tabBarItem = item1;
+    MainNavigationController *nav = [[MainNavigationController alloc] initWithRootViewController:vc];
+    [self addChildViewController:nav];
 }
 
 /*

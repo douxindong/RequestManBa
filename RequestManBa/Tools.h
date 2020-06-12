@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Tools : NSObject
-
++ (NSDictionary *)getTestJsonDataWithName:(NSString *)name;
 @end
 
 NS_ASSUME_NONNULL_END

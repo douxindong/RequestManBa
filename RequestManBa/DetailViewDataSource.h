@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "RequestFileItemModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DetailViewDataSource : NSObject
-
+@interface DetailViewDataSource : NSObject<UITableViewDelegate,UITableViewDataSource>
+- (instancetype)initWithItem:(ItemItem *)item;
+- (void)bindTableView:(UITableView *)tableView;
 @end
 
 NS_ASSUME_NONNULL_END

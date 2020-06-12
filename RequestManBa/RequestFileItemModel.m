@@ -9,5 +9,7 @@
 #import "RequestFileItemModel.h"
 
 @implementation RequestFileItemModel
-
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    return @{@"item" : [ItemItem class]};
+}
 @end

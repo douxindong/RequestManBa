@@ -11,6 +11,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SendTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIButton *methodButton;
+@property (weak, nonatomic) IBOutlet UITextField *urlTextField;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIMenu *inlineMenu;
 
 @end
 

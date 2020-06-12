@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "MainTabBarController.h"
 
 @interface AppDelegate ()
 
@@ -17,24 +18,35 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//    self.window.rootViewController = [ViewController new];
+    MainTabBarController *mainVC = [[MainTabBarController alloc] init];
+    self.window.rootViewController = mainVC;
+    [self.window makeKeyAndVisible];
+    
+    
+    
+//    NSString *url = @"MiniProgram://lifevc.com/packages/main/live-room/index?liveId=428548&relatedGuangBusinessId=43762230&from=backstagePat&userName=gh_9648f422f2cd";
+//    NSString *url1 = @"MiniProgram://lifevc.com?path=packages%2Fmain%2Flive-room%2Findex%3FliveId%3D428548%26relatedGuangBusinessId%3D43762230%26from%3DbackstagePath&userName=gh_9648f422f2cd";
+//    NSURL *URL = [NSURL URLWithString:url];
+//    NSURL *URL1 = [NSURL URLWithString:url1];
+    
+    
+    
+    
     return YES;
 }
-
-
-#pragma mark - UISceneSession lifecycle
-
-
-- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
-    // Called when a new scene session is being created.
-    // Use this method to select a configuration to create the new scene with.
-    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
-}
-
-
-- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
-    // Called when the user discards a scene session.
-    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options{
+     if (self.window) {
+         if (url) {
+//             NSString *fileNameStr = [url lastPathComponent];
+//             NSString *Doc = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/localFile"] stringByAppendingPathComponent:fileNameStr];
+//             NSLog(@"Doc == %@",Doc);
+//             NSData *data = [NSData dataWithContentsOfURL:url];
+//             [data writeToFile:Doc atomically:YES];
+         }
+     }
+     return YES;
 }
 
 

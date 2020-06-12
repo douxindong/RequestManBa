@@ -7,10 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "RequestFileModel.h"
 NS_ASSUME_NONNULL_BEGIN
+@class Info;
+@class ItemItem;
 
-@interface RequestFileItemModel : NSObject
+@interface RequestFileItemModel :NSObject
+@property (nonatomic , strong) Info              * info;
+@property (nonatomic , strong) NSArray <ItemItem *>              * item;
 
 @end
 

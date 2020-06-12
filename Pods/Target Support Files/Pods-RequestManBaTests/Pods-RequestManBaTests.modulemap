@@ -1,0 +1,6 @@
+framework module Pods_RequestManBaTests {
+  umbrella header "Pods-RequestManBaTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -11,6 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DescpTableViewCell : UITableViewCell
+@property (nonatomic, strong) UITableView *tb;
+@property (weak, nonatomic) IBOutlet UILabel *topLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *despLabel;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstain;
 
 @end
 

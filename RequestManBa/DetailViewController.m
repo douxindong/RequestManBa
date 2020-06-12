@@ -7,22 +7,31 @@
 //
 
 #import "DetailViewController.h"
-#import "TextCollectionViewCell.h"
-@interface DetailViewController ()<UITableViewDelegate,UITableViewDataSource>
+#import "DetailViewDataSource.h"
+@interface DetailViewController ()
 @property (nonatomic, strong) UITableView *tableview;
+
 @property (nonatomic, strong) NSString *response;
+
+@property (nonatomic, strong) DetailViewDataSource *dataSource;
 @end
 
 @implementation DetailViewController
+
+- (DetailViewDataSource *)dataSource{
+    if (_dataSource == nil) {
+        _dataSource = [[DetailViewDataSource alloc] initWithItem:_item];
+    }
+    return _dataSource;
+}
 - (UITableView *)tableview
 {
     if (!_tableview) {
         _tableview = [[UITableView alloc] init];
-        _tableview.delegate = self;
-        _tableview.dataSource = self;
+        _tableview.delegate = self.dataSource;
+        _tableview.dataSource = self.dataSource;
         _tableview.tableFooterView = [UIView new];
-        _tableview registerNib:[UINib nibWithNibName:<#(nonnull NSString *)#> bundle:<#(nullable NSBundle *)#>] forCellReuseIdentifier:<#(nonnull NSString *)#>
-//        [_tableview registerClass:[<#CellClass#> class] forCellReuseIdentifier:<#KReuseCellIdentifier#>];
+        _tableview.rowHeight = UITableViewAutomaticDimension;
     }
     return _tableview;
 }
@@ -34,78 +43,9 @@
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    [self.dataSource bindTableView:self.tableview];
     [self requestData];
-    
 }
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(UITableViewCell.class)];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(UITableViewCell.class)];
-    }
-    UILabel *label = [[UILabel alloc] init];
-    label.font = [UIFont systemFontOfSize:12];
-    label.numberOfLines = 0;
-    [cell.contentView addSubview:label];
-    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(cell.contentView).offset(10);
-        make.top.equalTo(cell.contentView).offset(10);
-        make.bottom.right.equalTo(cell.contentView).offset(-10);
-    }];
-    if (indexPath.section == 0) {
-        label.text = [_item.request.url yy_modelDescription];
-    }else if (indexPath.section == 1){
-        label.text = [_item.request.header[indexPath.row] yy_modelDescription];
-    }else if (indexPath.section == 2){
-        label.text = _item.request.request_description;
-    }else if (indexPath.section == 3){
-        label.text = _response;
-    }
-    return cell;
-}
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 1) {
-        return _item.request.header.count;
-    }
-    return 1;
-}
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 4;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 20)];
-    view.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
-    UILabel *label = [[UILabel alloc] init];
-    label.font = [UIFont systemFontOfSize:12];
-    if (section == 0) {
-        label.text = _item.request.method;
-    }else if (section == 1){
-        label.text = @"header";
-    }else if (section == 2){
-        label.text = @"request_description";
-    }else if (section == 3){
-        label.text = @"response";
-    }
-    label.textAlignment = NSTextAlignmentLeft;
-    [view addSubview:label];
-    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(view).offset(10);
-        make.centerY.equalTo(view);
-    }];
-    return view;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 30;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
-}
-
-
-
-
-
-
 NSString *getApiToken(NSString *url){
     NSString *ApiToken = ApiTokenRest;
     if ([url containsString:@"w2api"]) {
@@ -148,13 +88,9 @@ NSString *getApiToken(NSString *url){
     }];
     
 }
-
 - (void)setItem:(ItemItem *)item{
     _item = item;
 }
-
-
-
 - (void)LogRequest:(NSString *)relativeUrl Head:(NSDictionary *)customerHead
                                          method:(NSString *)method
                                   withParameter:(NSDictionary *)parameters
