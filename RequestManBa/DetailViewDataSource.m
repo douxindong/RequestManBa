@@ -41,6 +41,16 @@
         if (cell == nil) {
             cell = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(SendTableViewCell.class) owner:self options:nil].lastObject;
         }
+        NSString *urlstr = @"https://videoapi.lifevc.com/video/List/10/1?deviceId=123&itemInfoId=0";
+        __block NSString *path = @"";
+        [_item.request.url.path enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            path = [path stringByAppendingFormat:@"/%@",obj];
+        }];
+        NSString *host = [_item.request.url.host.firstObject stringByReplacingOccurrencesOfString:@"{{baseurl}}" withString:@"http://videoapi.lifevc.com"];
+        
+        urlstr = [NSString stringWithFormat:@"%@%@",host,path];
+        cell.urlTextField.text = urlstr;
+        
         return cell;
     }else if (indexPath.section == 1){
         HeaderItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(HeaderItemTableViewCell.class)];

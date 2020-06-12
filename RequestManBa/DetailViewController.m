@@ -44,7 +44,7 @@
         make.edges.equalTo(self.view);
     }];
     [self.dataSource bindTableView:self.tableview];
-    [self requestData];
+//    [self requestData];
 }
 NSString *getApiToken(NSString *url){
     NSString *ApiToken = ApiTokenRest;
