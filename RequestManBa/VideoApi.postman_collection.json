@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "1ebab7c2-aeaf-5d1d-3e3e-37bcfd64f0af",
+		"name": "VideoApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "获取sts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"\r",
+							"var hashed = CryptoJS.MD5(\"123456\").toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"pm.environment.set(\"Pwd\", hashed);\r",
+							"\r",
+							"\r",
+							"console.log(hashed);\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ApiToken",
+						"value": "{{apitoken}}",
+						"type": "text"
+					},
+					{
+						"key": "ustr",
+						"value": "ESWkaLG3T8joYlR5OhUjHJDtb1v7fhT0SAkSNwI2e9%2b8NWrsbnHHqhvM3NpHeABHhgmLg9vA51Q%3d",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "IosNative/6.5.1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}/video/GetPlayAuth?token=MTpNVFF0TkVJdFFqWXRRMEV0TlVVdE9FWXRRMEl0TWtJdE1rSXRRVEF0UXpRdE5EUXRPREF0UXpZdFF6QXRSa1V0UVRZdE1USXRNREl0UVVZdFFUQXRRakV0TmprdFJUTXRPVUV0TWpjdE1rRXRORFV0TWtRdFJEQXRNRGt0T1RjdFFqSXRRMEV0UkRndE9EVXROek10T1VFdE1UUXRNMFl0UWpFdE1UTXRSalF0TWpRdE9UZ3RRekl0TVRRdE5EVXROamd0TXpZdE16RXRORE10TmpJdFF6VXRORU10TkVNdE9URXRRVU10T0RrdFJFVXRPRVV0TTBFdFJEY3ROa1V0TVRFdE5qY3RORFV0TkRndE1qWXRPRGd0UXpFdE9FWXROalF0TmtFdFJFVXRPRVl0TXpFdFFUVXROak10UmtVPQ==",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"video",
+						"GetPlayAuth"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "MTpNVFF0TkVJdFFqWXRRMEV0TlVVdE9FWXRRMEl0TWtJdE1rSXRRVEF0UXpRdE5EUXRPREF0UXpZdFF6QXRSa1V0UVRZdE1USXRNREl0UVVZdFFUQXRRakV0TmprdFJUTXRPVUV0TWpjdE1rRXRORFV0TWtRdFJEQXRNRGt0T1RjdFFqSXRRMEV0UkRndE9EVXROek10T1VFdE1UUXRNMFl0UWpFdE1UTXRSalF0TWpRdE9UZ3RRekl0TVRRdE5EVXROamd0TXpZdE16RXRORE10TmpJdFF6VXRORU10TkVNdE9URXRRVU10T0RrdFJFVXRPRVV0TTBFdFJEY3ROa1V0TVRFdE5qY3RORFV0TkRndE1qWXRPRGd0UXpFdE9FWXROalF0TmtFdFJFVXRPRVl0TXpFdFFUVXROak10UmtVPQ=="
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "登录",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"LoginName\",\"IosVideo@lifevc.com\");\r",
+							"pm.environment.set(\"Pwd\",\"45flk5P3S4GLPDFJA\");\r",
+							"\r",
+							"var hashed = CryptoJS.MD5(pm.environment.get(\"Pwd\")).toString(CryptoJS.enc.Hex);\r",
+							"pm.environment.set(\"PwdMd5\", hashed);\r",
+							"\r",
+							"console.log(pm.environment.get(\"Pwd\"));\r",
+							"console.log(hashed);\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ApiToken",
+						"value": "{{apitoken}}",
+						"type": "text"
+					},
+					{
+						"key": "ustr",
+						"value": "ESWkaLG3T8joYlR5OhUjHJDtb1v7fhT0SAkSNwI2e9%2b8NWrsbnHHqhvM3NpHeABHhgmLg9vA51Q%3d",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "IosNative/6.5.1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"LoginName\":\"{{LoginName}}\",\"LoginPwd\":\"{{PwdMd5}}\"}"
+				},
+				"url": {
+					"raw": "{{baseurl}}/video/PlayerLogin",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"video",
+						"PlayerLogin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "视频列表",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"\r",
+							"var hashed = CryptoJS.MD5(\"123456\").toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"pm.environment.set(\"Pwd\", hashed);\r",
+							"\r",
+							"\r",
+							"console.log(hashed);\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ApiToken",
+						"type": "text",
+						"value": "{{apitoken}}"
+					},
+					{
+						"key": "ustr",
+						"type": "text",
+						"value": "ESWkaLG3T8joYlR5OhUjHJDtb1v7fhT0SAkSNwI2e9%2b8NWrsbnHHqhvM3NpHeABHhgmLg9vA51Q%3d"
+					},
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "IosNative/6.5.1"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}/video/List/10/1?deviceId=123&itemInfoId=0",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"video",
+						"List",
+						"10",
+						"1"
+					],
+					"query": [
+						{
+							"key": "deviceId",
+							"value": "123"
+						},
+						{
+							"key": "itemInfoId",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "记录查看日志",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"\r",
+							"var hashed = CryptoJS.MD5(\"123456\").toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"pm.environment.set(\"Pwd\", hashed);\r",
+							"\r",
+							"\r",
+							"console.log(hashed);\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ApiToken",
+						"type": "text",
+						"value": "{{apitoken}}"
+					},
+					{
+						"key": "ustr",
+						"type": "text",
+						"value": "ESWkaLG3T8joYlR5OhUjHJDtb1v7fhT0SAkSNwI2e9%2b8NWrsbnHHqhvM3NpHeABHhgmLg9vA51Q%3d"
+					},
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "IosNative/6.5.1"
+					},
+					{
+						"key": "DeviceSystem",
+						"type": "text",
+						"value": "macOS11.1.1"
+					},
+					{
+						"key": "NetWorkType",
+						"type": "text",
+						"value": "WIFI"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "{{baseurl}}/video/8dbd377b2d624513b81310097300ca0d/ViewLog?DeviceId=123&Duration=1",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"video",
+						"8dbd377b2d624513b81310097300ca0d",
+						"ViewLog"
+					],
+					"query": [
+						{
+							"key": "DeviceId",
+							"value": "123"
+						},
+						{
+							"key": "Duration",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "记录点击日志",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"\r",
+							"var hashed = CryptoJS.MD5(\"123456\").toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"pm.environment.set(\"Pwd\", hashed);\r",
+							"\r",
+							"\r",
+							"console.log(hashed);\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ApiToken",
+						"type": "text",
+						"value": "{{apitoken}}"
+					},
+					{
+						"key": "ustr",
+						"type": "text",
+						"value": "ESWkaLG3T8joYlR5OhUjHJDtb1v7fhT0SAkSNwI2e9%2b8NWrsbnHHqhvM3NpHeABHhgmLg9vA51Q%3d"
+					},
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "IosNative/6.5.1"
+					},
+					{
+						"key": "DeviceSystem",
+						"type": "text",
+						"value": "macOS11.1.1"
+					},
+					{
+						"key": "NetWorkType",
+						"type": "text",
+						"value": "WIFI"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "{{baseurl}}/video/a6606c6b2b3349fe89bb7223a7b6a9b0/ClickLog?DeviceId=1&type=1&itemInfoId=2",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"video",
+						"a6606c6b2b3349fe89bb7223a7b6a9b0",
+						"ClickLog"
+					],
+					"query": [
+						{
+							"key": "DeviceId",
+							"value": "1"
+						},
+						{
+							"key": "type",
+							"value": "1"
+						},
+						{
+							"key": "itemInfoId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
