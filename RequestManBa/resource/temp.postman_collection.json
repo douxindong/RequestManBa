@@ -1,0 +1,27 @@
+{
+	"info": {
+		"_postman_id": "441993cf-dcad-c13d-aef6-63969f0c8eeb",
+		"name": "temp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "接口Name",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}",
+					"host": [
+						"{{baseurl}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

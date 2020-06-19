@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="KGk-i7-Jjw" customClass="HeaderItemTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="383" height="85"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="383" height="85"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ur8-Hn-dv3">
+                        <rect key="frame" x="69" y="10" width="100" height="65"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="5WF-1p-TDx"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ccd-AM-LBK">
+                        <rect key="frame" x="189" y="10" width="149" height="65"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="：" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O2H-qG-HOG">
+                        <rect key="frame" x="174" y="31" width="10" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="10" id="5wj-EH-tWt"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nCx-ei-Del">
+                        <rect key="frame" x="348" y="30.5" width="25" height="24"/>
+                        <connections>
+                            <action selector="addHeaderItemButtonClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="8hG-iW-7xJ"/>
+                        </connections>
+                    </button>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yo4-LM-4fV">
+                        <rect key="frame" x="10" y="27" width="51" height="31"/>
+                        <color key="onTintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <connections>
+                            <action selector="enableSwitchClick:" destination="KGk-i7-Jjw" eventType="valueChanged" id="q1s-Q7-2Py"/>
+                        </connections>
+                    </switch>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="O2H-qG-HOG" firstAttribute="leading" secondItem="ur8-Hn-dv3" secondAttribute="trailing" constant="5" id="1bm-0k-vv6"/>
+                    <constraint firstItem="Yo4-LM-4fV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="3u4-Qs-zae"/>
+                    <constraint firstAttribute="bottom" secondItem="Ccd-AM-LBK" secondAttribute="bottom" constant="10" id="6OC-4Z-XcM"/>
+                    <constraint firstAttribute="bottom" secondItem="ur8-Hn-dv3" secondAttribute="bottom" constant="10" id="8Db-Sp-3ZG"/>
+                    <constraint firstItem="Ccd-AM-LBK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="MhU-4w-iH5"/>
+                    <constraint firstItem="nCx-ei-Del" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Xou-n9-u2i"/>
+                    <constraint firstItem="nCx-ei-Del" firstAttribute="leading" secondItem="Ccd-AM-LBK" secondAttribute="trailing" constant="10" id="fUI-4M-lI0"/>
+                    <constraint firstItem="Yo4-LM-4fV" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gsC-lt-B9W"/>
+                    <constraint firstItem="Ccd-AM-LBK" firstAttribute="leading" secondItem="O2H-qG-HOG" secondAttribute="trailing" constant="5" id="kJz-xZ-AcA"/>
+                    <constraint firstItem="ur8-Hn-dv3" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="otd-yv-8hw"/>
+                    <constraint firstItem="ur8-Hn-dv3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="t8p-gW-by1"/>
+                    <constraint firstAttribute="trailing" secondItem="nCx-ei-Del" secondAttribute="trailing" constant="10" id="tK2-nH-xEa"/>
+                    <constraint firstItem="ur8-Hn-dv3" firstAttribute="leading" secondItem="Yo4-LM-4fV" secondAttribute="trailing" constant="10" id="vUJ-0h-qdr"/>
+                    <constraint firstItem="O2H-qG-HOG" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="yf2-dT-xsm"/>
+                    <constraint firstItem="Ccd-AM-LBK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="zBO-DA-Dhu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="addHeaderItemButton" destination="nCx-ei-Del" id="a9a-Ae-LUm"/>
+                <outlet property="enableSwitch" destination="Yo4-LM-4fV" id="djS-5t-C4i"/>
+                <outlet property="keyTextfield" destination="ur8-Hn-dv3" id="YZl-Z2-UVR"/>
+                <outlet property="valueTextfield" destination="Ccd-AM-LBK" id="3sj-s4-Ij3"/>
+            </connections>
+            <point key="canvasLocation" x="183.33333333333334" y="127.56696428571428"/>
+        </tableViewCell>
+    </objects>
+</document>

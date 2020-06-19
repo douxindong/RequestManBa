@@ -7,6 +7,8 @@ target 'RequestManBa' do
 pod 'AFNetworking'
 pod 'Masonry'
 pod 'YYModel'
+pod 'IQKeyboardManager'
+pod 'FDFullscreenPopGesture'
   # Pods for RequestManBa
 
   target 'RequestManBaTests' do
