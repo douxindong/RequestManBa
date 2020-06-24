@@ -11,8 +11,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-static NSString *const UserCustomizationStr = @"UserCustomization.json";//用户自定义的
-static NSString *const ExportfileHeaderStr = @"exportfileheader.json";
+static NSString *const UserCustomizationStr = @"UserCustomizationRequest";//用户自定义的
+static NSString *const ExportfileHeaderStr = @"exportFileHeaderRequest";
+
+
+
+static NSString *const UserCustomizationEnvStr = @"UserCustomizationEnv";
+static NSString *const UserCustomizationGloabStr = @"UserCustomizationGloab";
+
+//static NSString *const ExportfileEnvStr = @"exportFileEnv";
+//static NSString *const ExportfileGloabStr = @"exportFileGloab";
+
+
+
 
 typedef NS_ENUM(NSUInteger, CacheDriType) {
     CacheDriTypeCache,
@@ -26,8 +37,24 @@ typedef NS_ENUM(NSUInteger, CacheDriType) {
 + (void)saveCacheData:(id)data key:(NSString *)key;
 + (void)saveLibraryData:(id)data key:(NSString *)key;
 + (void)saveDocumentData:(id)data key:(NSString *)key;
-+ (void)saveData:(id)data key:(NSString *)key dirType:(NSInteger)dirType;
-+ (void)saveDataWithfilePath:(id)originfilePath key:(NSString *)key dirType:(NSInteger)dirType;
+
++ (void)saveData:(id)data
+             key:(NSString *)key
+         dirType:(NSInteger)dirType;
+
++ (void)saveDataWithfilePath:(id)originfilePath
+                         key:(NSString *)key
+                     dirType:(NSInteger)dirType;
+
++ (void)saveData:(id)data
+             key:(NSString *)key
+         dirType:(NSInteger)dirType
+      completion:(void(^)(NSString *filePath))completion;
+
++ (void)saveData:(id)data
+        filePath:(NSString *)filePath
+      completion:(void(^)(NSString *filePath))completion;
+
 #pragma mark 获取原数据
 + (id)getDataWithKey:(NSString *)key;
 + (NSDictionary *)getJsonDataWithPath:(NSString *)path;

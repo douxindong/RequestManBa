@@ -25,7 +25,6 @@
         _tableview.delegate = self;
         _tableview.dataSource = self;
         _tableview.tableFooterView = [UIView new];
-        _tableview.editing = YES;
     }
     return _tableview;
 }
@@ -38,8 +37,46 @@
     return _rightNavBtn;
 }
 - (void)addClick{
-    DetailViewController *detailVC = [DetailViewController new];
-    [self.navigationController pushViewController:detailVC animated:YES];
+    NSLog(@"新建请求");
+    @weakify(self);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"request api name" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    //定义第一个输入框；
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"request api name 1";
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+    //增加确定按钮；
+    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        @strongify(self);
+        //获取第1个输入框；
+        UITextField *textField = alertController.textFields.firstObject;
+        NSLog(@"textField.text == %@",textField.text);
+        if (textField.text.length) {
+            if (self.requestFileModel.needSection) {
+                ItemItem *itemModel = [ItemItem getDefaultItemItem];
+                itemModel.name = textField.text;
+                NSMutableArray *items = [self.requestFileModel.itemDatas.lastObject.items mutableCopy];
+                [items addObject:itemModel];
+                self.requestFileModel.itemDatas.lastObject.items = [items copy];
+                [CacheTool saveData:[[self.requestFileModel yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                    NSLog(@"filePath == %@",filePath);
+                }];
+                [self refresh];
+            }else{
+                ItemItem *itemModel = [ItemItem getDefaultItemItem];
+                itemModel.name = textField.text;
+                NSMutableArray *items = [self.itemData.items mutableCopy];
+                [items addObject:itemModel];
+                self.itemData.items = [items copy];
+                [CacheTool saveData:[[self.itemData yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                    NSLog(@"filePath == %@",filePath);
+                }];
+                [self refresh];
+            }
+        }
+    }]];
+    [self presentViewController:alertController animated:true completion:nil];
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -64,7 +101,7 @@
     dic = [CacheTool getDataWithKey:_filePath];
     NSLog(@"dic == %@",dic);
     _requestFileModel = [RequestFileModel yy_modelWithJSON:dic];
-    self.title = _requestFileModel.info.name;
+    
     [_requestFileModel.itemDatas enumerateObjectsUsingBlock:^(ItemItemData * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.items.count) {
             _requestFileModel.needSection = YES;
@@ -73,8 +110,10 @@
     }];
     if (!_requestFileModel.needSection) {
         _itemData = [ItemItemData yy_modelWithJSON:dic];
+        self.title = _itemData.name;
         NSLog(@"_itemData == %@",[_itemData yy_modelDescription]);
     }else{
+        self.title = _requestFileModel.info.name;
         NSLog(@"_requestFileModel == %@",[_requestFileModel yy_modelDescription]);
     }
     [self.tableview reloadData];
@@ -120,44 +159,111 @@
 {
     return YES;
 }
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
-}
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     //添加一个删除按钮
-
+    @weakify(self)
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        
-        
+        @strongify(self)
+        if (self.requestFileModel.needSection) {
+            if (self.requestFileModel.itemDatas[indexPath.section].items.count>1) {
+                NSMutableArray *items = [self.requestFileModel.itemDatas[indexPath.section].items mutableCopy];
+                [items removeObjectAtIndex:indexPath.row];
+                self.requestFileModel.itemDatas[indexPath.section].items = [items copy];
+                [CacheTool saveData:[[self.requestFileModel yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                    NSLog(@"filePath == %@",filePath);
+                }];
+                [self refresh];
+            }else{
+                [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+                [SVProgressHUD showInfoWithStatus:@"至少保留一项"];
+            }
+        }else{
+            if (self.itemData.items.count>1) {
+                NSMutableArray *items = [self.itemData.items mutableCopy];
+                [items removeObjectAtIndex:indexPath.row];
+                self.itemData.items = [items copy];
+                [CacheTool saveData:[[self.itemData yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                    NSLog(@"filePath == %@",filePath);
+                }];
+                [self refresh];
+            }else{
+                [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+                [SVProgressHUD showInfoWithStatus:@"至少保留一项"];
+            }
+        }
     }];
     deleteAction.backgroundColor = [UIColor blackColor];
     
     UITableViewRowAction *RenameAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Rename" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         
-        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"create collection" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        //定义第一个输入框；
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.placeholder = @"name";
+            if (self.requestFileModel.needSection) {
+                textField.text = self.requestFileModel.itemDatas[indexPath.section].items[indexPath.row].name;
+            }else{
+                textField.text = self.itemData.items[indexPath.row].name;
+            }
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        }];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+        //增加确定按钮；
+        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            @strongify(self)
+            //获取第1个输入框；
+            UITextField *textField = alertController.textFields.firstObject;
+            NSLog(@"textField.text == %@",textField.text);
+            if (textField.text.length) {
+                if (self.requestFileModel.needSection) {
+                    self.requestFileModel.itemDatas[indexPath.section].items[indexPath.row].name = textField.text;
+                    [CacheTool saveData:[[self.requestFileModel yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                        NSLog(@"filePath == %@",filePath);
+                    }];
+                    [self refresh];
+                }else{
+                    self.itemData.items[indexPath.row].name = textField.text;
+                    [CacheTool saveData:[[self.itemData yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                        NSLog(@"filePath == %@",filePath);
+                    }];
+                    [self refresh];
+                }
+            }
+        }]];
+        [self presentViewController:alertController animated:true completion:nil];
     }];
     RenameAction.backgroundColor = [UIColor blueColor];
     
     return @[deleteAction,RenameAction];
     
 }
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == (UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert)) {
-//        [self.dataSoure removeObject:[self.dataSoure objectAtIndex:indexPath.row]];
-        //animation后面有好几种删除的方法
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     DetailViewController *detailVC = [DetailViewController new];
+    @weakify(self);
     if (_requestFileModel.needSection) {
         detailVC.item = _requestFileModel.itemDatas[indexPath.section].items[indexPath.row];
+        detailVC.itemItemChangeBlock = ^(ItemItem * _Nonnull itemItem) {
+            @strongify(self);
+            NSMutableArray *items = [self.requestFileModel.itemDatas[indexPath.section].items mutableCopy];
+            [items replaceObjectAtIndex:indexPath.row withObject:itemItem];
+            self.requestFileModel.itemDatas[indexPath.section].items = [items copy];
+            [CacheTool saveData:[[self.requestFileModel yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                NSLog(@"filePath == %@",filePath);
+            }];
+            [self refresh];
+        };
     }else{
         detailVC.item = _itemData.items[indexPath.row];
+        detailVC.itemItemChangeBlock = ^(ItemItem * _Nonnull itemItem) {
+            @strongify(self);
+            NSMutableArray *items = [self.itemData.items mutableCopy];
+            [items replaceObjectAtIndex:indexPath.row withObject:itemItem];
+            self.itemData.items = [items copy];
+            [CacheTool saveData:[[self.itemData yy_modelToJSONObject] jsonPrettyStringEncoded] key:self.filePath dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                NSLog(@"filePath == %@",filePath);
+            }];
+            [self refresh];
+        };
     }
     [self.navigationController pushViewController:detailVC animated:YES];
 }

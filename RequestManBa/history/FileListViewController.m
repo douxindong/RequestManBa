@@ -47,7 +47,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightNavBtn];
-    
+    self.title = @"collection";
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -91,14 +91,13 @@
                 UITextField *textField = alertController.textFields.firstObject;
                 NSLog(@"textField.text == %@",textField.text);
                 if (textField.text.length) {
-                    NSDictionary *dic = [Tools getJsonDataFromBundleWithName:@"temp.postman_collection.json"];
-                    [CacheTool saveData:[dic jsonPrettyStringEncoded] key:[NSString stringWithFormat:@"%@.%@.json",UserCustomizationStr,textField.text] dirType:CacheDriTypeCache];
+                    ItemItemData *itemData = [ItemItemData getDefaultItemItemData];
+                    itemData.name = textField.text;
+                    itemData.createDate = [NSString stringWithFormat:@"%@",[NSDate date]];
+                    [CacheTool saveData:[[itemData yy_modelToJSONObject] jsonPrettyStringEncoded] key:[NSString stringWithFormat:@"%@%@",UserCustomizationStr,textField.text] dirType:CacheDriTypeCache completion:^(NSString * _Nonnull filePath) {
+                        NSLog(@"filePath == %@",filePath);
+                    }];
                     [self loadData];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        HistoryViewController *historyVC = [HistoryViewController new];
-                        historyVC.filePath = self.filePathList.lastObject;
-                        [self.navigationController pushViewController:historyVC animated:YES];
-                    });
                 }
             }]];
             [self presentViewController:alertController animated:true completion:nil];
@@ -148,23 +147,82 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(UITableViewCell.class)];
     }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    NSString *collectionName = self.filePathList[indexPath.row];
-    collectionName = [collectionName stringByReplacingOccurrencesOfString:ExportfileHeaderStr withString:@""];
+    NSString *collectionName = [self.filePathList[indexPath.row] stringByReplacingOccurrencesOfString:ExportfileHeaderStr withString:@""];
+    collectionName = [collectionName stringByReplacingOccurrencesOfString:UserCustomizationStr withString:@""];
     cell.textLabel.text = collectionName;
     return cell;
 }
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.filePathList.count;
 }
-
-
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     HistoryViewController *historyVC = [HistoryViewController new];
     historyVC.filePath = self.filePathList[indexPath.row];
     [self.navigationController pushViewController:historyVC animated:YES];
 }
+
+//
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return YES;
+//}
+//- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    //添加一个删除按钮
+//    @weakify(self)
+//    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+//        @strongify(self)
+//        [self.filePathList removeObjectAtIndex:indexPath.row];
+//        NSString *filePath = self.filePathList[indexPath.row];
+//        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//            NSError *error;
+//            BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+//            if (success) {
+//                [self.tableview reloadData];
+//            }else{
+//                NSLog(@"error == %@",error);
+//            }
+//        }
+//
+//    }];
+//    deleteAction.backgroundColor = [UIColor blackColor];
+//
+//    UITableViewRowAction *RenameAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Rename" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+//
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"create collection" message:nil preferredStyle:UIAlertControllerStyleAlert];
+//        //定义第一个输入框；
+//        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+//            textField.placeholder = @"name";
+//            textField.text = self.filePathList[indexPath.row];
+//            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//        }];
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+//        //增加确定按钮；
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            @strongify(self)
+//            //获取第1个输入框；
+//            UITextField *textField = alertController.textFields.firstObject;
+//            NSLog(@"textField.text == %@",textField.text);
+//            if (textField.text.length) {
+//                NSString *filePath = self.filePathList[indexPath.row];
+//                if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//                    NSError *error;
+//                    BOOL success = [[NSFileManager defaultManager]moveItemAtPath:filePath toPath:filePath error:&error];
+//                    if (success) {
+//                        [self.tableview reloadData];
+//                    }else{
+//                        NSLog(@"error == %@",error);
+//                    }
+//                }
+//                [self loadData];
+//            }
+//        }]];
+//        [self presentViewController:alertController animated:true completion:nil];
+//    }];
+//    RenameAction.backgroundColor = [UIColor blueColor];
+//
+//    return @[deleteAction,RenameAction];
+//
+//}
 /*
 #pragma mark - Navigation
 

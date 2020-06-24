@@ -18,7 +18,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
-
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     NSLog(@"goto page ====%@",NSStringFromClass([self class]));
+}
 /*
 #pragma mark - Navigation
 

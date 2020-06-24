@@ -22,29 +22,53 @@
 - (instancetype)initWithItem:(ItemItem *)item{
     if (self = [super init]) {
         _item = item;
+        NSArray *arr = @[];
+        if (!_item.request.url.query.count) {
+            ValuesItem *vl = [ValuesItem getDefaultValueItem];
+            NSMutableArray *values = [arr mutableCopy];
+            [values addObject:vl];
+            _item.request.url.query = [values copy];
+        }
+        if (!_item.request.header.count){
+            ValuesItem *vl = [ValuesItem getDefaultValueItem];
+            NSMutableArray *values = [arr mutableCopy];
+            [values addObject:vl];
+            _item.request.header = [values copy];
+        }
     }
     return self;
 }
 - (void)bindTableView:(UITableView *)tableView{
     _tableView = tableView;
     [self registerCells];
-//    [self send];
+}
+- (void)save{
+    if(self.changed){
+        CBInvokeBlock(self.itemItemChangeBlock,_item);
+    }
 }
 - (void)send{
     if (!_item) return;
+    
+    [self save];
+    
     NSDate *startDate = [NSDate date];
+    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    [SVProgressHUD showWithStatus:@"加载中..."];
     [[RequestTool sharedInstance] requestItem:_item success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [SVProgressHUD dismiss];
         NSTimeInterval deltaTime = [[NSDate date] timeIntervalSinceDate:startDate]*1000;
-        NSLog(@"Status: %zd",((NSHTTPURLResponse *)task.response).statusCode)
-        NSLog(@"Time: %.fs",deltaTime)
-        self.responseDesp = [NSString stringWithFormat:@"Status:%zd Time:%.fs",((NSHTTPURLResponse *)task.response).statusCode,deltaTime];
+        NSLog(@"Status: %zd",((NSHTTPURLResponse *)task.response).statusCode);
+        NSLog(@"Time: %.fs",deltaTime);
+        self.responseDesp = [NSString stringWithFormat:@"Status:%zd Time:%.fms",((NSHTTPURLResponse *)task.response).statusCode,deltaTime];
         self.response = [responseObject jsonPrettyStringEncoded];
         [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [SVProgressHUD dismiss];
         NSTimeInterval deltaTime = [[NSDate date] timeIntervalSinceDate:startDate]*1000;
-        NSLog(@"Status: %zd",((NSHTTPURLResponse *)task.response).statusCode)
-        NSLog(@"Time: %.fs",deltaTime)
-        self.responseDesp = [NSString stringWithFormat:@"Status:%zd Time:%.fs",((NSHTTPURLResponse *)task.response).statusCode,deltaTime];
+        NSLog(@"Status: %zd",((NSHTTPURLResponse *)task.response).statusCode);
+        NSLog(@"Time: %.fs",deltaTime);
+        self.responseDesp = [NSString stringWithFormat:@"Status:%zd Time:%.fms",((NSHTTPURLResponse *)task.response).statusCode,deltaTime];
         self.response = error.description;
         [self.tableView reloadData];
     }];
@@ -57,48 +81,64 @@
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    @weakify(self);
     if (indexPath.section == 0) {
         SendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(SendTableViewCell.class)];
         if (cell == nil) {
             cell = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(SendTableViewCell.class) owner:self options:nil].lastObject;
         }
-        cell.sendBlock = [self sendBlock];
-        cell.chooseMethodBlock = [self chooseMethodBlock];
-        NSString *urlstr = @"https://videoapi.lifevc.com/video/List/10/1?deviceId=123&itemInfoId=0";
-        __block NSString *path = @"";
-        [_item.request.url.path enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            path = [path stringByAppendingFormat:@"/%@",obj];
-        }];
-        NSString *host = [_item.request.url.host.firstObject stringByReplacingOccurrencesOfString:@"{{baseurl}}" withString:@"http://videoapi.lifevc.com"];
-        
-        urlstr = [NSString stringWithFormat:@"%@%@",host,path];
-        cell.urlTextField.text = urlstr;
+        cell.request = _item.request;
+        cell.sendBlock = ^{
+            @strongify(self);
+            [self send];
+        };
+        cell.requestChangeBlock = ^(Request * _Nonnull request) {
+            @strongify(self);
+            self.changed = YES;
+            self.item.request = request;
+        };
         return cell;
-    }else if (indexPath.section == 1){
+    }else if (indexPath.section == 1||indexPath.section == 2){
         HeaderItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(HeaderItemTableViewCell.class)];
         if (cell == nil) {
             cell = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(HeaderItemTableViewCell.class) owner:self options:nil].lastObject;
         }
-        cell.keyTextfield.text = _item.request.url.query[indexPath.row].key;
-        cell.valueTextfield.text = _item.request.url.query[indexPath.row].value;
-        if (indexPath.row == _item.request.url.query.count-1) {
+        NSArray *arr = nil;
+        if (indexPath.section == 1) {
+            arr = _item.request.url.query;
+        }else if (indexPath.section == 2){
+            arr = _item.request.header;
+        }
+        cell.valueItem = arr[indexPath.row];
+        if (indexPath.row == arr.count-1) {
             cell.addHeaderItemButton.hidden = NO;
         }else{
             cell.addHeaderItemButton.hidden = YES;
         }
-        return cell;
-    }else if (indexPath.section == 2){
-        HeaderItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(HeaderItemTableViewCell.class)];
-        if (cell == nil) {
-            cell = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(HeaderItemTableViewCell.class) owner:self options:nil].lastObject;
-        }
-        cell.keyTextfield.text = _item.request.header[indexPath.row].key;
-        cell.valueTextfield.text = _item.request.header[indexPath.row].value;
-        if (indexPath.row == _item.request.header.count-1) {
-            cell.addHeaderItemButton.hidden = NO;
-        }else{
-            cell.addHeaderItemButton.hidden = YES;
-        }
+        cell.addItemBlock = ^{
+            @strongify(self);
+            ValuesItem *vl = [ValuesItem getDefaultValueItem];
+            vl.key = [NSString stringWithFormat:@"%zd",indexPath.row];
+            NSMutableArray *values = [arr mutableCopy];
+            [values addObject:vl];
+            if (indexPath.section == 1) {
+                self.item.request.url.query = [values copy];
+            }else if (indexPath.section == 2){
+                self.item.request.header = [values copy];
+            }
+            [self.tableView reloadData];
+        };
+        cell.valuesItemChangeBlock = ^(ValuesItem * _Nonnull valueItem) {
+            @strongify(self);
+            self.changed = YES;
+            NSMutableArray *values = [self.item.request.url.query mutableCopy];
+            [values replaceObjectAtIndex:indexPath.row withObject:valueItem];
+            if (indexPath.section == 1) {
+                self.item.request.url.query = [values copy];
+            }else if (indexPath.section == 2){
+                self.item.request.header = [values copy];
+            }
+        };
         return cell;
     }else if (indexPath.section == 3){
         DescpTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(DescpTableViewCell.class)];
@@ -110,25 +150,8 @@
         cell.textView.text = self.response;
         return cell;
     }
-    DTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(DTableViewCell.class)];
-    if (cell == nil) {
-        cell = [[DTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(DTableViewCell.class)];
-    }
-    return cell;
+    return nil;
 }
-- (void(^)(void))sendBlock{
-    __weak typeof(self) weakself = self;
-    return ^{
-        [weakself send];
-    };
-}
-- (void(^)(NSString * _Nonnull methodName))chooseMethodBlock{
-//    __weak typeof(self) weakself = self;
-    return ^(NSString * _Nonnull methodName){
-        NSLog(@"methodName == %@",methodName);
-    };
-}
-
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 1) {
         return _item.request.url.query.count;
@@ -165,7 +188,39 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
 }
-
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //添加一个删除按钮
+    @weakify(self)
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        NSArray *arr = nil;
+        if (indexPath.section == 1) {
+            arr = self.item.request.url.query;
+        }else if (indexPath.section == 2){
+            arr = self.item.request.header;
+        }
+        if (arr.count>1) {
+            NSMutableArray *values = [arr mutableCopy];
+            [values removeObjectAtIndex:indexPath.row];
+            if (indexPath.section == 1) {
+                self.item.request.url.query = [values copy];
+            }else if (indexPath.section == 2){
+                self.item.request.header = [values copy];
+            }
+            [self.tableView reloadData];
+            [self save];
+        }else{
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+            [SVProgressHUD showInfoWithStatus:@"至少保留一项"];
+        }
+    }];
+    return @[deleteAction];
+    
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
 }

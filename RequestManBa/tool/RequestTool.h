@@ -23,6 +23,7 @@ typedef NS_OPTIONS(NSInteger, MBRequestMethod) {
 - (void)requestItem:(ItemItem *)item
             success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
             failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
++ (NSArray *)methods;
 @end
 
 NS_ASSUME_NONNULL_END

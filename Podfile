@@ -9,6 +9,8 @@ pod 'Masonry'
 pod 'YYModel'
 pod 'IQKeyboardManager'
 pod 'FDFullscreenPopGesture'
+pod 'SVProgressHUD'
+pod 'YYKit'
   # Pods for RequestManBa
 
   target 'RequestManBaTests' do

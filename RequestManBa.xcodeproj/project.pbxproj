@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		231E5F45B01E001FA558DE44 /* Pods_RequestManBa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B25D5BDB6C57646710349E /* Pods_RequestManBa.framework */; };
+		498EA86324A20CDA003633AB /* temp.gloabs.json in Resources */ = {isa = PBXBuildFile; fileRef = 498EA86224A20CDA003633AB /* temp.gloabs.json */; };
+		498EA86624A20D68003633AB /* MBGloabsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA86524A20D68003633AB /* MBGloabsModel.m */; };
 		499447A724921B2700035769 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 499447A624921B2700035769 /* AppDelegate.m */; };
 		499447AD24921B2700035769 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499447AC24921B2700035769 /* HistoryViewController.m */; };
 		499447B224921B2800035769 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499447B124921B2800035769 /* Assets.xcassets */; };
@@ -47,7 +49,6 @@
 		49B01189249798D900A8EF37 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49B01187249798D900A8EF37 /* SettingViewController.xib */; };
 		49B0118D2499F2BF00A8EF37 /* EnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B0118B2499F2BE00A8EF37 /* EnvironmentViewController.m */; };
 		49B0118E2499F2BF00A8EF37 /* EnvironmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49B0118C2499F2BE00A8EF37 /* EnvironmentViewController.xib */; };
-		49B011912499F41600A8EF37 /* EnvironmentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B011902499F41600A8EF37 /* EnvironmentsModel.m */; };
 		49B011952499F66000A8EF37 /* ParamConfigDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B011932499F66000A8EF37 /* ParamConfigDetailViewController.m */; };
 		49B011962499F66000A8EF37 /* ParamConfigDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49B011942499F66000A8EF37 /* ParamConfigDetailViewController.xib */; };
 		49B01198249B372F00A8EF37 /* temp.postman_collection.json in Resources */ = {isa = PBXBuildFile; fileRef = 49B01197249B372F00A8EF37 /* temp.postman_collection.json */; };
@@ -76,6 +77,9 @@
 		1644E14AFC4C4CF0058D5744 /* Pods-RequestManBa-RequestManBaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RequestManBa-RequestManBaUITests.debug.xcconfig"; path = "Target Support Files/Pods-RequestManBa-RequestManBaUITests/Pods-RequestManBa-RequestManBaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		33A31CBF3164FBB233633A75 /* Pods_RequestManBa_RequestManBaUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RequestManBa_RequestManBaUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B0190D933C407A0140C2FBB /* Pods-RequestManBaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RequestManBaTests.release.xcconfig"; path = "Target Support Files/Pods-RequestManBaTests/Pods-RequestManBaTests.release.xcconfig"; sourceTree = "<group>"; };
+		498EA86224A20CDA003633AB /* temp.gloabs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = temp.gloabs.json; sourceTree = "<group>"; };
+		498EA86424A20D68003633AB /* MBGloabsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBGloabsModel.h; sourceTree = "<group>"; };
+		498EA86524A20D68003633AB /* MBGloabsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MBGloabsModel.m; sourceTree = "<group>"; };
 		499447A224921B2700035769 /* RequestManBa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RequestManBa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		499447A524921B2700035769 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		499447A624921B2700035769 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -147,8 +151,6 @@
 		49B0118A2499F2BE00A8EF37 /* EnvironmentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnvironmentViewController.h; sourceTree = "<group>"; };
 		49B0118B2499F2BE00A8EF37 /* EnvironmentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnvironmentViewController.m; sourceTree = "<group>"; };
 		49B0118C2499F2BE00A8EF37 /* EnvironmentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EnvironmentViewController.xib; sourceTree = "<group>"; };
-		49B0118F2499F41600A8EF37 /* EnvironmentsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnvironmentsModel.h; sourceTree = "<group>"; };
-		49B011902499F41600A8EF37 /* EnvironmentsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnvironmentsModel.m; sourceTree = "<group>"; };
 		49B011922499F66000A8EF37 /* ParamConfigDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParamConfigDetailViewController.h; sourceTree = "<group>"; };
 		49B011932499F66000A8EF37 /* ParamConfigDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParamConfigDetailViewController.m; sourceTree = "<group>"; };
 		49B011942499F66000A8EF37 /* ParamConfigDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParamConfigDetailViewController.xib; sourceTree = "<group>"; };
@@ -369,6 +371,7 @@
 		49B0115E24975B6900A8EF37 /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				498EA86224A20CDA003633AB /* temp.gloabs.json */,
 				49B01197249B372F00A8EF37 /* temp.postman_collection.json */,
 				499447F12492394A00035769 /* VideoApi.postman_collection.json */,
 				499447E424922A7A00035769 /* Postman Echo.postman_collection.json */,
@@ -395,11 +398,11 @@
 				49B0118A2499F2BE00A8EF37 /* EnvironmentViewController.h */,
 				49B0118B2499F2BE00A8EF37 /* EnvironmentViewController.m */,
 				49B0118C2499F2BE00A8EF37 /* EnvironmentViewController.xib */,
-				49B0118F2499F41600A8EF37 /* EnvironmentsModel.h */,
-				49B011902499F41600A8EF37 /* EnvironmentsModel.m */,
 				49B011922499F66000A8EF37 /* ParamConfigDetailViewController.h */,
 				49B011932499F66000A8EF37 /* ParamConfigDetailViewController.m */,
 				49B011942499F66000A8EF37 /* ParamConfigDetailViewController.xib */,
+				498EA86424A20D68003633AB /* MBGloabsModel.h */,
+				498EA86524A20D68003633AB /* MBGloabsModel.m */,
 			);
 			path = setting;
 			sourceTree = "<group>";
@@ -539,6 +542,7 @@
 				49B0116724975C1200A8EF37 /* CollectionsViewController.xib in Resources */,
 				499448202493743200035769 /* DescpTableViewCell.xib in Resources */,
 				499447B224921B2800035769 /* Assets.xcassets in Resources */,
+				498EA86324A20CDA003633AB /* temp.gloabs.json in Resources */,
 				499447F22492394A00035769 /* VideoApi.postman_collection.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -677,6 +681,7 @@
 				49B011702497839A00A8EF37 /* ExportFileManager.m in Sources */,
 				499447A724921B2700035769 /* AppDelegate.m in Sources */,
 				499447DC2492219300035769 /* MainTabBarController.m in Sources */,
+				498EA86624A20D68003633AB /* MBGloabsModel.m in Sources */,
 				49944817249366D300035769 /* HeaderItemTableViewCell.m in Sources */,
 				499447F824924B7800035769 /* RequestTool.m in Sources */,
 				499447FF24935EF700035769 /* UIView+Additional.m in Sources */,
@@ -684,7 +689,6 @@
 				4994481B24936CF800035769 /* DetailViewDataSource.m in Sources */,
 				49B0115424973BF100A8EF37 /* CacheTool.m in Sources */,
 				49B0116C2497816000A8EF37 /* FileListViewController.m in Sources */,
-				49B011912499F41600A8EF37 /* EnvironmentsModel.m in Sources */,
 				49B0115024971EFC00A8EF37 /* NSDictionary+tool.m in Sources */,
 				499447B824921B2800035769 /* main.m in Sources */,
 				49B0116624975C1200A8EF37 /* CollectionsViewController.m in Sources */,

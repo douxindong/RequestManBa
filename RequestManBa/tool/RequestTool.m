@@ -39,22 +39,25 @@ static AFHTTPSessionManager *sessionManager = nil;
             success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
             failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure{
     AFHTTPSessionManager *manager = [RequestTool defaultSessionManager];
-    NSString *urlstr = @"";
-    __block NSString *path = @"";
-    [item.request.url.path enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        path = [path stringByAppendingFormat:@"/%@",obj];
-    }];
-    NSString *host = [item.request.url.host.firstObject stringByReplacingOccurrencesOfString:@"{{baseurl}}" withString:@"http://videoapi.lifevc.com"];
-    
-    urlstr = [NSString stringWithFormat:@"%@%@",host,path];
+    NSString *urlstr = getGloabValue(item.request.url.raw);
     __block NSMutableDictionary *headers = [NSMutableDictionary dictionary];
-    [item.request.header enumerateObjectsUsingBlock:^(HeaderItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [headers addEntriesFromDictionary:@{obj.key:[obj.value stringByReplacingOccurrencesOfString:@"{{apitoken}}" withString:getApiToken(urlstr)]}];
+    [item.request.header enumerateObjectsUsingBlock:^(ValuesItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.enabled) {
+            [headers addEntriesFromDictionary:@{obj.key:getGloabValue(obj.value)}];
+        }
     }];
     __block NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [item.request.url.query enumerateObjectsUsingBlock:^(QueryItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [parameters addEntriesFromDictionary:@{obj.key:obj.value}];
+    [item.request.url.query enumerateObjectsUsingBlock:^(ValuesItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.enabled) {
+            [parameters addEntriesFromDictionary:@{obj.key:getGloabValue(obj.value)}];
+        }
     }];
+    if (![NSURL URLWithString:urlstr]) {
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:10000 userInfo:@{@"err":[NSString stringWithFormat:@"无法识别：%@",urlstr]}];
+        CBInvokeBlock(failure,nil,error);
+        [self LogRequest:urlstr Head:headers method:item.request.method withParameter:parameters withResponseObject:error];
+        return;
+    }
     [[manager dataTaskWithHTTPMethod:item.request.method URLString:urlstr parameters:parameters headers:headers uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
@@ -66,6 +69,21 @@ static AFHTTPSessionManager *sessionManager = nil;
         CBInvokeBlock(failure,task,error);
         [self LogRequest:urlstr Head:headers method:item.request.method withParameter:parameters withResponseObject:error];
     }] resume];
+}
+NSString *getGloabValue(NSString *originValue){
+    NSDictionary *dics = [CacheTool getDataWithKey:UserCustomizationGloabStr];
+    MBGloabsModel *gloabsModel = nil;
+    if (dics) {
+        gloabsModel = [MBGloabsModel yy_modelWithJSON:dics];
+    }
+    __block NSString *value = nil;
+    [gloabsModel.values enumerateObjectsUsingBlock:^(ValuesItem * _Nonnull gloabsValueItem, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *pKey = [NSString stringWithFormat:@"{{%@}}",gloabsValueItem.key];
+        if ([originValue containsString:pKey]) {
+            value = [originValue stringByReplacingOccurrencesOfString:pKey withString:gloabsValueItem.value];
+        }
+    }];
+    return value?:originValue;
 }
 NSString *getApiToken(NSString *url){
     NSString *ApiToken = ApiTokenRest;
@@ -145,5 +163,8 @@ withResponseObject:(id)responseObject{
     }
     return methodName;
     
+}
++ (NSArray *)methods{
+    return @[@"GET",@"POST",@"PUT",@"HEAD",@"DELETE"];
 }
 @end

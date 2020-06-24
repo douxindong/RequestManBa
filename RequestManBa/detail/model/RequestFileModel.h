@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
+@class ValuesItem;
 @interface Info :NSObject
 @property (nonatomic , copy) NSString              * _postman_id;
 @property (nonatomic , copy) NSString              * name;
@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface QueryItem :NSObject
 @property (nonatomic , copy) NSString              * key;
 @property (nonatomic , copy) NSString              * value;
+@property (nonatomic, assign) BOOL enabled;
 
 @end
 @interface Url :NSObject
@@ -42,22 +43,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy) NSString              * protocol;
 @property (nonatomic , strong) NSArray <NSString *>              * host;
 @property (nonatomic , strong) NSArray <NSString *>              * path;
-@property (nonatomic , strong) NSArray <QueryItem *>              * query;
+@property (nonatomic , strong) NSArray <ValuesItem *>              * query;
 
 @end
 
-@interface HeaderItem :NSObject
-@property (nonatomic , copy) NSString              * key;
-@property (nonatomic , copy) NSString              * value;
-@property (nonatomic , copy) NSString              * type;
-
-@end
 
 @interface Request :NSObject
 @property (nonatomic , copy) NSString              * method;
 @property (nonatomic , strong) Url              * url;
 @property (nonatomic , copy) NSString              * request_description;
-@property (nonatomic , strong) NSArray <HeaderItem *>              * header;
+@property (nonatomic , strong) NSArray <ValuesItem *>              * header;
 
 @end
 
@@ -72,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSArray <EventItem *>              * event;
 @property (nonatomic , strong) Request              * request;
 @property (nonatomic , strong) NSArray <ResponseItem *>              * response;
-
++ (ItemItem *)getDefaultItemItem;
 @end
 
 
@@ -86,7 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy) NSString              * name;
 @property (nonatomic , strong) NSArray <ItemItem *>              * items;
 @property (nonatomic , copy) NSString              * item_description;
-
+@property (nonatomic, copy) NSString *path;
+@property (nonatomic, copy) NSString *createDate;
++ (ItemItemData *)getDefaultItemItemData;
 @end
 
 
@@ -95,7 +92,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) Info              * info;
 @property (nonatomic , strong) NSArray <ItemItemData *>              * itemDatas;
 @property (nonatomic, assign) BOOL needSection;
-
+@property (nonatomic, copy) NSString *path;
+@property (nonatomic, copy) NSString *createDate;
 @end
 
 NS_ASSUME_NONNULL_END

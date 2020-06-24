@@ -28,7 +28,8 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    [self showFilesWithURL:[NSURL fileURLWithPath:documentsDirectory]];
+    NSLog(@"documentsDirectory == %@",documentsDirectory);
+//    [self showFilesWithURL:[NSURL fileURLWithPath:documentsDirectory]];
     
     
     return YES;

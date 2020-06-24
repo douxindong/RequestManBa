@@ -6,22 +6,47 @@
 	},
 	"item": [
 		{
-			"name": "接口Name",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {}
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}",
-					"host": [
-						"{{baseurl}}"
-					]
-				}
-			},
-			"response": []
-		}
+            "name": "api name",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "value": "",
+                        "type": "text",
+                        "enabled": true
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseurl}}",
+                    "host": [
+                        "{{baseurl}}"
+                    ],
+                    "path": [
+                        ""
+                    ],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "type": "text",
+                            "enabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        }
 	],
 	"protocolProfileBehavior": {}
 }

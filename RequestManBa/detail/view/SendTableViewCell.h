@@ -10,13 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^SendBlock)(void);
-typedef void(^ChooseMethodBlock)(NSString *methodName);
+typedef void(^RequestChangeBlock)(Request *request);
 @interface SendTableViewCell : UITableViewCell
+@property (nonatomic, strong) Request *request;
 @property (weak, nonatomic) IBOutlet UIButton *methodButton;
 @property (weak, nonatomic) IBOutlet UITextField *urlTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, copy) SendBlock sendBlock;
-@property (nonatomic, copy) ChooseMethodBlock chooseMethodBlock;
+@property (nonatomic, copy) RequestChangeBlock requestChangeBlock;
 @end
 
 NS_ASSUME_NONNULL_END

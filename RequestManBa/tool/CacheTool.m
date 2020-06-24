@@ -19,7 +19,7 @@
 + (void)saveDocumentData:(id)data key:(NSString *)key{
     [self saveData:data key:key dirType:CacheDriTypeDocument];
 }
-+ (void)saveData:(id)data key:(NSString *)key dirType:(NSInteger)dirType{
++ (void)saveData:(id)data key:(NSString *)key dirType:(NSInteger)dirType completion:(void(^)(NSString *filePath))completion{
     NSString *filePath = nil;
     switch (dirType) {
         case CacheDriTypeCache:
@@ -42,12 +42,19 @@
             break;
     }
     if (filePath) {
-        [self saveData:data filePath:[filePath stringByAppendingPathComponent:key]];
+        [self saveData:data filePath:[filePath stringByAppendingPathComponent:key] completion:completion];
     }
 }
-+ (void)saveData:(id)data filePath:(NSString *)filePath{
++ (void)saveData:(id)data key:(NSString *)key dirType:(NSInteger)dirType{
+    [self saveData:data key:key dirType:dirType completion:nil];
+}
++ (void)saveData:(id)data filePath:(NSString *)filePath completion:(void(^)(NSString *filePath))completion{
     BOOL success = [data writeToFile:filePath atomically:YES];
+    CBInvokeBlock(completion,success?filePath:nil);
     NSLog(@"success == %@--存储路径 == %@",success?@"success":@"fail",filePath);
+}
++ (void)saveData:(id)data filePath:(NSString *)filePath{
+    [self saveData:data filePath:filePath completion:nil];
 }
 + (void)saveDataWithfilePath:(id)originfilePath key:(NSString *)key dirType:(NSInteger)dirType{
     NSString *filePath = nil;

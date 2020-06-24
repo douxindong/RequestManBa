@@ -32,7 +32,7 @@
         _tableview.delegate = self.dataSource;
         _tableview.dataSource = self.dataSource;
         _tableview.tableFooterView = [UIView new];
-        _tableview.tableHeaderView = self.headerView;
+//        _tableview.tableHeaderView = self.headerView;
 ////        _tableview.rowHeight = UITableViewAutomaticDimension;
 //        _tableview.estimatedRowHeight = 44;
     }
@@ -77,10 +77,13 @@
         make.edges.equalTo(self.view);
     }];
     [self.dataSource bindTableView:self.tableview];
-
+    self.dataSource.itemItemChangeBlock = self.itemItemChangeBlock;
 }
 
-
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [_dataSource save];
+}
 - (void)setItem:(ItemItem *)item{
     _item = item;
 }

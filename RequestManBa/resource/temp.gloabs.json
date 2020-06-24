@@ -1,0 +1,15 @@
+{
+	"id": "2b23b4d0-1c89-9636-8b5f-f068a0e3fa17",
+	"name": "gloabs",
+	"values": [
+		{
+			"key": "",
+			"value": "",
+			"type": "text",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "gloabs",
+	"_postman_exported_at": "2020-06-23T10:05:08.667Z",
+	"_postman_exported_using": "Postman/7.25.0"
+}

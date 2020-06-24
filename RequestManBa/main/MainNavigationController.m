@@ -20,9 +20,28 @@
 }
 //- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
 //    if (self.childViewControllers.count > 0) {
-//        viewController.hidesBottomBarWhenPushed = YES;
+//
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [button setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//        [button setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateHighlighted];
+//        button.frame = CGRectMake(0, 0, 60, 60);
+//        // 让按钮内部的所有内容左对齐
+//        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//        //        [button sizeToFit];
+//        // 让按钮的内容往左边偏移10
+//        button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+//        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+//        [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+//        // 修改导航栏左边的item
+//        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+//
+////        viewController.hidesBottomBarWhenPushed = YES;
 //    }
 //    [super pushViewController:viewController animated:animated];
+//}
+//- (void)back{
+//    [self popViewControllerAnimated:YES];
 //}
 /*
 #pragma mark - Navigation

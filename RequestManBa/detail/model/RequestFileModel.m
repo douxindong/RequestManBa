@@ -22,26 +22,19 @@
 @implementation EventItem
 @end
 
-@implementation QueryItem
-
-@end
 
 @implementation Url
 + (NSDictionary *)modelContainerPropertyGenericClass {
-    return @{@"query" : [QueryItem class]};
+    return @{@"query" : [ValuesItem class]};
 }
 @end
 
-
-@implementation HeaderItem
-
-@end
 @implementation Request
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"request_description"  : @"description"};
 }
 + (NSDictionary *)modelContainerPropertyGenericClass {
-    return @{@"header" : [HeaderItem class]};
+    return @{@"header" : [ValuesItem class]};
 }
 @end
 
@@ -56,6 +49,11 @@
              @"event" : [EventItem class],
     };
 }
++ (ItemItem *)getDefaultItemItem{
+    NSDictionary *dic = [Tools getJsonDataFromBundleWithName:@"temp.postman_collection.json"];
+    NSArray *item = dic[@"item"];
+    return [ItemItem yy_modelWithJSON:item.firstObject];
+}
 @end
 
 
@@ -64,6 +62,7 @@
 
 
 @implementation ItemItemData
+
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"items"  : @"item",
              @"item_description"  : @"description"
@@ -71,6 +70,11 @@
 }
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{@"items" : [ItemItem class]};
+}
+
++ (ItemItemData *)getDefaultItemItemData{
+    NSDictionary *dic = [Tools getJsonDataFromBundleWithName:@"temp.postman_collection.json"];
+    return [ItemItemData yy_modelWithJSON:dic];
 }
 @end
 

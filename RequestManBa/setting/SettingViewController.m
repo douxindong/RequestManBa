@@ -36,7 +36,8 @@
     }];
 }
 - (NSArray *)arr{
-    return @[@"manager environments",@"gloabs"];
+    return @[@"gloabs"];
+//    return @[@"manager environments",@"gloabs"];
 }
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(UITableViewCell.class)];
@@ -55,14 +56,14 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 0) {
-        EnvironmentViewController *environmentVC = [EnvironmentViewController new];
-        [self.navigationController pushViewController:environmentVC animated:YES];
-    }else if (indexPath.row == 1){
+//    if (indexPath.row == 0) {
+//        EnvironmentViewController *environmentVC = [EnvironmentViewController new];
+//        [self.navigationController pushViewController:environmentVC animated:YES];
+//    }else if (indexPath.row == 1){
         ParamConfigDetailViewController *paramVC = [ParamConfigDetailViewController new];
         paramVC.vcType = ParamConfigVCTypeGloabs;
         [self.navigationController pushViewController:paramVC animated:YES];
-    }
+//    }
 }
 /*
 #pragma mark - Navigation

@@ -17,23 +17,33 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
+    [self.urlTextField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    self.methodButton.titleLabel.adjustsFontSizeToFitWidth = YES;
 }
-- (NSArray *)titles{
-    return @[@"GET",@"POST",@"PUT",@"HEAD",@"DELETE"];
+- (void)textChange:(UITextField *)textfiled{
+    if (textfiled == self.urlTextField) {
+        _request.url.raw = textfiled.text;
+    }
+    CBInvokeBlock(_requestChangeBlock,_request);
 }
 - (IBAction)chooseMethod:(id)sender {
-    [YBPopupMenu showRelyOnView1:sender titles:[self titles] icons:nil menuWidth:100 delegate:self];
+    [YBPopupMenu showRelyOnView1:sender titles:[RequestTool methods] icons:nil menuWidth:100 delegate:self];
 }
 #pragma mark - YBPopupMenuDelegate
 - (void)ybPopupMenuDidSelectedAtIndex:(NSInteger)index ybPopupMenu:(YBPopupMenu *)ybPopupMenu
 {
-    CBInvokeBlock(_chooseMethodBlock,[self titles][index]);
+    _request.method = [RequestTool methods][index];
+    [self.methodButton setTitle:_request.method forState:UIControlStateNormal];
+    CBInvokeBlock(_requestChangeBlock,_request);
 }
 - (IBAction)send:(id)sender {
     CBInvokeBlock(_sendBlock);
 }
-
+- (void)setRequest:(Request *)request{
+    _request = request;
+    [self.methodButton setTitle:_request.method forState:UIControlStateNormal];
+    self.urlTextField.text = _request.url.raw;
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
