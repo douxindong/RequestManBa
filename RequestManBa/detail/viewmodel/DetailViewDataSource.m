@@ -131,7 +131,7 @@
         cell.valuesItemChangeBlock = ^(ValuesItem * _Nonnull valueItem) {
             @strongify(self);
             self.changed = YES;
-            NSMutableArray *values = [self.item.request.url.query mutableCopy];
+            NSMutableArray *values = [arr mutableCopy];
             [values replaceObjectAtIndex:indexPath.row withObject:valueItem];
             if (indexPath.section == 1) {
                 self.item.request.url.query = [values copy];
